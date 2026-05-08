@@ -213,7 +213,9 @@ def search_quotes(keyword):
     conn = sqlite3.connect(DB_PATH)
 
     query = f"""
-    SELECT id, text, author
+    SELECT id,
+           SUBSTR(text, 1, 80) || '...' as text,
+           author
     FROM quotes
     WHERE text LIKE '%{keyword}%'
     """
@@ -227,6 +229,7 @@ def search_quotes(keyword):
 
     return df
 
+    
 # =========================
 # TOP AUTHORS
 # =========================
@@ -466,27 +469,29 @@ with gr.Blocks() as app:
 
     with gr.Tab("Search"):
 
-        gr.Markdown("## Search Quotes")
+        with gr.Column(scale=1):
     
-        keyword = gr.Textbox(
-            label="Keyword"
-        )
+            gr.Markdown("## Search Quotes")
     
-        search_output = gr.Dataframe(
-            wrap=True,
-            row_count=(200, "dynamic"),
-            interactive=False
-        )
+            keyword = gr.Textbox(
+                label="Keyword"
+            )
     
-        search_btn = gr.Button(
-            "Search"
-        )
+            search_btn = gr.Button(
+                "Search"
+            )
     
-        search_btn.click(
-            fn=search_quotes,
-            inputs=keyword,
-            outputs=search_output
-        )
+            search_output = gr.Dataframe(
+                headers=["id", "text", "author"],
+                interactive=False,
+                row_count=10
+            )
+    
+            search_btn.click(
+                fn=search_quotes,
+                inputs=keyword,
+                outputs=search_output
+            )
     
     with gr.Tab("Dashboard"):
 
@@ -520,7 +525,7 @@ with gr.Blocks() as app:
             "Show Dashboard Analytics"
         )
 
-        gr.Markdown("## 🌟 Quote of the Day")
+        gr.Markdown("## Quote of the Day")
         
         random_output = gr.Textbox(
             lines=4,
@@ -552,7 +557,9 @@ with gr.Blocks() as app:
 
         gr.Markdown("## Top Authors")
     
-        authors_table = gr.Dataframe()
+        authors_table = gr.Dataframe(
+            headers=["author", "total_quotes"]
+        )
     
         authors_btn = gr.Button(
             "Show Top Authors"
