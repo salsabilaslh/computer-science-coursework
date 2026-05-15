@@ -31,29 +31,48 @@ def predict_wine(alcohol, malic_acid, ash):
 
     result = wine_info[prediction]
 
-    confidence_bar = "🟩" * int(confidence // 10)
+    bar0 = "🟩" * int(probabilities[0] * 10)
+    bar1 = "🟩" * int(probabilities[1] * 10)
+    bar2 = "🟩" * int(probabilities[2] * 10)
 
     return f"""
-## 🍷 Wine Analysis
+# 🍷 Wine Analysis
 
-### Prediction
-**{result['name']}**
+## Prediction
+### {result['name']}
 
-### Confidence
-**{confidence:.2f}%**
+## Confidence Score
+### {confidence:.2f}%
 
-{confidence_bar}
-
-### Characteristics
+## Wine Characteristics
 {result['description']}
+
+# 📊 AI Probability Analysis
+
+### 🍷 Premium Red Wine
+{probabilities[0]*100:.2f}%
+
+{bar0}
+
+### 🍇 Classic Wine
+{probabilities[1]*100:.2f}%
+
+{bar1}
+
+### 🥂 Sparkling White Wine
+{probabilities[2]*100:.2f}%
+
+{bar2}
 """
 
 
+# custom theme
 theme = gr.themes.Soft(
     primary_hue="orange",
     secondary_hue="gray"
 )
 
+# UI
 with gr.Blocks(theme=theme) as demo:
 
     gr.Markdown("""
@@ -61,10 +80,16 @@ with gr.Blocks(theme=theme) as demo:
 
 Advanced Machine Learning prediction system using
 Scikit-learn `load_wine()` dataset.
+
+### Selected Features
+- Alcohol
+- Malic Acid
+- Ash
 """)
 
     with gr.Row():
 
+        # left column
         with gr.Column(scale=1):
 
             alcohol = gr.Slider(
@@ -96,14 +121,16 @@ Scikit-learn `load_wine()` dataset.
                 variant="primary"
             )
 
+        # right column
         with gr.Column(scale=1):
 
             output = gr.Markdown("""
-## AI Analysis Result
+## 🍷 AI Analysis Result
 
 Waiting for prediction...
 """)
 
+    # button click
     predict_btn.click(
         fn=predict_wine,
         inputs=[alcohol, malic_acid, ash],
