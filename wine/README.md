@@ -13,6 +13,7 @@ Advanced Machine Learning web application using the Scikit-learn `load_wine()` d
   - Ash
 - Interactive slider-based UI
 - Confidence score prediction
+- AI probability analysis visualization
 - Modern dashboard layout using Gradio
 - Public web deployment support
 
