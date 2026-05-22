@@ -32,7 +32,7 @@ Advanced Machine Learning web application using the Scikit-learn `load_wine()` d
 
 Live Gradio Web Application:
 
-[https://db0c67c74be0427eb8.gradio.live/](https://b3080cf801db512bf6.gradio.live)
+[[https://db0c67c74be0427eb8.gradio.live/](https://b3080cf801db512bf6.gradio.live)](https://a0657da6f1d7948fa0.gradio.live)
 
 ---
 
